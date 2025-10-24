@@ -81,6 +81,32 @@ def search_transactions():
       # filtered_transactions = [t for t in transactions if t['date'] == search_date]
       # return render_template('transactions.html', transactions=filtered_transactions)
 
+# total balance feature
+@app.route("/balance")
+def total_balance():
+    
+    # Method A: Using a loop
+    # amounts = 0
+    # for transaction in transactions:
+    #     amounts += transaction['amount']
+    
+    # Method B: Using sum with map
+    # amounts = sum(map(lambda t: t['amount'], transactions))
+
+    # Method C: Using sum with a generator expression
+    amounts = sum(t['amount'] for t in transactions)
+
+    # Method D: Using reduce
+    # from functools import reduce
+    # amounts = reduce(lambda x, y: x + y, (t['amount'] for t in transactions))
+
+    # return f"Total Balance: {amounts}"
+    # return render_template("transactions.html", transactions=transactions, total_amount=amounts)
+    return f"""
+          <td class="text-center"><b>TOTAL</b></td>
+          <td>{ amounts }</td>
+        """
+
 # Run the Flask app
 if __name__ == '__main__':
     app.run(debug=True)
