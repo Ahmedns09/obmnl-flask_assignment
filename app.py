@@ -53,6 +53,34 @@ def delete_transaction(transaction_id):
             break
     return redirect(url_for("get_transactions"))
 
+# Search feature
+@app.route('/search', methods=['GET', 'POST'])
+def search_transactions():
+    if(request.method == 'GET'):
+        return render_template("search.html")
+    elif(request.method == 'POST'):
+        min = float(request.form['min_amount'])
+        max = float(request.form['max_amount'])
+
+        # Method A: Using list comprehension
+        filtered_transactions = []
+        for transaction in transactions:
+            if transaction['amount'] >= min and transaction['amount'] <= max:
+                filtered_transactions.append(transaction)
+
+        # Method B: Using filter function
+        # filtered_transactions = list(filter(lambda t: min <= t['amount'] <= max, transactions))
+
+        # Method C: Using list comprehension (more concise)
+        # filtered_transactions = [t for t in transactions if min <= t['amount'] <= max]
+        
+        return render_template("transactions.html", transactions=filtered_transactions)
+
+      # Another search example by "date"
+      # search_date = request.form['date']
+      # filtered_transactions = [t for t in transactions if t['date'] == search_date]
+      # return render_template('transactions.html', transactions=filtered_transactions)
+
 # Run the Flask app
 if __name__ == '__main__':
     app.run(debug=True)
